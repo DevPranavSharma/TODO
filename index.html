@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Bangers"
+    />
+    <style>
+      h1 {
+        font-size: 5vmax;
+        font-family: Bangers;
+        color: rgb(70, 101, 240);
+      }
+      .container {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        display: flex;
+        height: 100%;
+        background-color: rgba(5, 5, 5, 0.938);
+        color: seashell;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0%;
+      }
+
+      #userInput {
+        padding: 1%;
+        font-size: 3vmin;
+        margin: 3%;
+        width: 50%;
+        border-radius: 3vmin;
+        border: 1px solid grey;
+      }
+      #userInput:focus {
+        outline: none;
+      }
+      ul {
+        font-size: 5vmin;
+        margin: 3%;
+        padding: 1%;
+        font-family: sans-serif;
+      }
+      li {
+        margin: 2%;
+      }
+      input[type="checkbox"] {
+        padding: 2%;
+      }
+      button {
+        margin: 1vh;
+        font-size: large;
+        border-radius: 50%;
+        border: 1px solid grey;
+        background-color: rgb(70, 101, 240);
+      }
+      .btn-row {
+        display: flex;
+        margin: 2%;
+      }
+      .btn-row button {
+        border-radius: 10px;
+        padding: 5px 7px 5px 7px;
+      }
+    </style>
+    <script>
+      window.onload = function () {
+        class TodoItemModel {
+          constructor(caption, isCompleted) {
+            this.caption = caption;
+            this.isCompleted = isCompleted;
+          }
+          toggle() {
+            this.isCompleted = !this.isCompleted;
+          }
+        }
+        class AppViewModel {
+          constructor() {
+            this.todoCollection = [];
+            this.filterType = "all";
+          }
+          addTodoItem(todoItem) {
+            this.todoCollection.push(todoItem);
+          }
+          render() {
+            var appPointer = this;
+            document.getElementById("list").innerHTML = "";
+            for (var i in this.todoCollection) {
+              if (appPointer.filterType === "all") {
+                var itemDOM = document.createElement("div");
+                var itemCheckbox = document.createElement("input");
+                itemCheckbox.setAttribute("type", "checkbox");
+                itemCheckbox.onchange = function (index) {
+                  appPointer.todoCollection[index].toggle();
+                  appPointer.render();
+                }.bind(null, i);
+                var itemCaption = document.createElement("span");
+                itemCaption.innerHTML = this.todoCollection[i].caption;
+                if (this.todoCollection[i].isCompleted) {
+                  itemCaption.style.setProperty(
+                    "text-decoration",
+                    "line-through"
+                  );
+                }
+                var itemDeleteBtn = document.createElement("button");
+                itemDeleteBtn.innerHTML = "x";
+                itemDeleteBtn.onclick = function (index) {
+                  appPointer.todoCollection.splice(index, 1);
+                  appPointer.render();
+                }.bind(null, i);
+                itemDOM.appendChild(itemCheckbox);
+                itemDOM.appendChild(itemCaption);
+                itemDOM.appendChild(itemDeleteBtn);
+                document.getElementById("list").appendChild(itemDOM);
+              }
+
+              //for completed
+              if (appPointer.filterType === "complete") {
+                if (this.todoCollection[i].isCompleted === true) {
+                  var itemDOM = document.createElement("div");
+                  var itemCheckbox = document.createElement("input");
+                  itemCheckbox.setAttribute("type", "checkbox");
+                  itemCheckbox.onchange = function (index) {
+                    appPointer.todoCollection[index].toggle();
+                    appPointer.render();
+                  }.bind(null, i);
+                  var itemCaption = document.createElement("span");
+                  itemCaption.innerHTML = this.todoCollection[i].caption;
+                  if (this.todoCollection[i].isCompleted) {
+                    itemCaption.style.setProperty(
+                      "text-decoration",
+                      "line-through"
+                    );
+                  }
+                  var itemDeleteBtn = document.createElement("button");
+                  itemDeleteBtn.innerHTML = "x";
+                  itemDeleteBtn.onclick = function (index) {
+                    appPointer.todoCollection.splice(index, 1);
+                    appPointer.render();
+                  }.bind(null, i);
+                  itemDOM.appendChild(itemCheckbox);
+                  itemDOM.appendChild(itemCaption);
+                  itemDOM.appendChild(itemDeleteBtn);
+                  document.getElementById("list").appendChild(itemDOM);
+                }
+              }
+
+              //for active
+              if (appPointer.filterType === "active") {
+                if (this.todoCollection[i].isCompleted !== true) {
+                  var itemDOM = document.createElement("div");
+                  var itemCheckbox = document.createElement("input");
+                  itemCheckbox.setAttribute("type", "checkbox");
+                  itemCheckbox.onchange = function (index) {
+                    appPointer.todoCollection[index].toggle();
+                    appPointer.render();
+                  }.bind(null, i);
+                  var itemCaption = document.createElement("span");
+                  itemCaption.innerHTML = this.todoCollection[i].caption;
+                  if (this.todoCollection[i].isCompleted) {
+                    itemCaption.style.setProperty(
+                      "text-decoration",
+                      "line-through"
+                    );
+                  }
+                  var itemDeleteBtn = document.createElement("button");
+                  itemDeleteBtn.innerHTML = "x";
+                  itemDeleteBtn.onclick = function (index) {
+                    appPointer.todoCollection.splice(index, 1);
+                    appPointer.render();
+                  }.bind(null, i);
+                  itemDOM.appendChild(itemCheckbox);
+                  itemDOM.appendChild(itemCaption);
+                  itemDOM.appendChild(itemDeleteBtn);
+                  document.getElementById("list").appendChild(itemDOM);
+                }
+              }
+            }
+          }
+        }
+        var app = new AppViewModel();
+        var todoitem = new TodoItemModel("od this", true);
+        var todoitem2 = new TodoItemModel("imp is  this", false);
+        var todoitem3 = new TodoItemModel("imp is most  this", false);
+        app.addTodoItem(todoitem);
+        app.addTodoItem(todoitem2);
+        app.addTodoItem(todoitem3);
+        app.render();
+        document.getElementById("userInput").onkeypress = function (event) {
+          console.log("presssed");
+          var keycode = event.keyCode ? event.keyCode : event.which;
+          if (keycode == "13") {
+            var todoitem = new TodoItemModel(event.target.value, false);
+            app.addTodoItem(todoitem);
+            event.target.value = "";
+            app.render();
+          }
+        };
+        document.getElementById("all").onclick = function () {
+          app.filterType = "all";
+          console.log((app.filterType = "all"));
+          app.render();
+        };
+        document.getElementById("complete").onclick = function () {
+          app.filterType = "complete";
+          console.log(app.filterType);
+          app.render();
+        };
+        document.getElementById("active").onclick = function () {
+          app.filterType = "active";
+          console.log(app.filterType);
+          app.render();
+        };
+      };
+    </script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>TODOs</h1>
+      <input type="text" id="userInput" />
+      <ul id="list"></ul>
+      <div class="btn-row">
+        <button class="filter" id="all">All</button>
+        <button class="filter" id="complete">Complete</button>
+        <button class="filter" id="active">Incomplete</button>
+      </div>
+    </div>
+  </body>
+</html>
